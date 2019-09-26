@@ -141,4 +141,14 @@ ipv4.ignore-auto-routes:                no
 ipv4.ignore-auto-dns:                   no
 ipv4.dhcp-client-i
 ```
+🌞 Afficher la table de routage de la machine et sa table ARP, expliquez chacune des lignes des deux tables
+```
+[root@localhost NetworkManager]# ip route
+default via 10.0.2.2 dev enp0s3 proto dhcp metric 100
+10.0.2.0/24 dev enp0s3 proto kernel scope link src 10.0.2.15 metric 100
+192.168.56.0/24 dev enp0s8 proto kernel scope link src 192.168.56.102 metric 101
+```
+Cette route est vers le réseau 10.0.2.2 (enp0s3 + 10.0.2.0/24), elle est utilisée pour une connexion (locale), la passerelle de cette route est à l'IP 10.0.2.15 et cette IP est portée par 192.168.56.102 .
 
+🌞 Récupérer la liste des ports en écoute (listening) sur la machine (TCP et UDP)
+Trouver/déduire la liste des applications qui écoutent sur chacun des ports TCP ou UDP repérés comme étant en écoute sur la machine (au moins un serveur SSH)
