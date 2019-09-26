@@ -3,7 +3,7 @@
 ```[root@localhost sysconfig]# ip a
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-    inet 127.0.0.1/8 scope host lo
+    inet 127.0.0.1/8 scope host lo```
        valid_lft forever preferred_lft forever
     inet6 ::1/128 scope host
        valid_lft forever preferred_lft forever
@@ -18,4 +18,5 @@
     inet 192.168.56.102/24 brd 192.168.56.255 scope global dynamic noprefixroute enp0s8
        valid_lft 723sec preferred_lft 723sec
     inet6 fe80::d4b7:b928:9ceb:e81d/64 scope link noprefixroute
-       valid_lft forever preferred_lft forever```
+       valid_lft forever preferred_lft forever
+ 
