@@ -20,3 +20,6 @@ PC1> ping 10.2.1.2
 
 - déterminer le protocole utilisé par ping à l'aide de Wireshark   
 ![wireshark](IMG/wireshark.PNG)
+
+## II. More switches
+
