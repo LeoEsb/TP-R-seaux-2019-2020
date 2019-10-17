@@ -70,4 +70,4 @@ Vlan    Mac Address       Type        Ports
 Total Mac Addresses for this criterion: 6
 ```
 🐙 En lançant Wireshark sur les liens des switches, il y a des trames CDP qui circulent. Quoi qu'est-ce ?
-
+![wireshark](IMG/wireshark1.PNG)
