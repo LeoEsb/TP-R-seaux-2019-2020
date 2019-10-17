@@ -2,9 +2,9 @@
 
 ## I. Simplest setup
 
-🌞 Mettre en place la topologie ci-dessus
+🌞 Mettre en place la topologie ci-dessus🦧
 
-🌞 Faire communiquer les deux PCs
+🌞 Faire communiquer les deux PCs🦧
 
 - avec un ping qui fonctionne   
 
@@ -23,7 +23,7 @@ PC1> ping 10.2.1.2
 
 ## II. More switches
 
-🌞 Gaire communiquer les trois PCs
+🌞 Gaire communiquer les trois PCs🦧
 ```
 PC1> ping 10.2.2.2
 84 bytes from 10.2.2.2 icmp_seq=1 ttl=64 time=0.815 ms
@@ -50,7 +50,7 @@ PC3> ping 10.2.2.2
 84 bytes from 10.2.2.2 icmp_seq=1 ttl=64 time=1.384 ms
 84 bytes from 10.2.2.2 icmp_seq=2 ttl=64 time=1.526 ms
 ```
-🌞 Analyser la table MAC d'un switch
+🌞 Analyser la table MAC d'un switch🦧
 
 - show mac address-table
 - comprendre/expliquer chaque ligne
@@ -69,11 +69,11 @@ Vlan    Mac Address       Type        Ports
    1    aabb.cc00.0330    DYNAMIC     Et1/1
 Total Mac Addresses for this criterion: 6
 ```
-🐙 En lançant Wireshark sur les liens des switches, il y a des trames CDP qui circulent. Quoi qu'est-ce ?
+🐙 En lançant Wireshark sur les liens des switches, il y a des trames CDP qui circulent. Quoi qu'est-ce ?🦧
 ![wireshark](IMG/wireshark1.PNG)
 
 
-🌞 Déterminer les informations STP
+🌞 Déterminer les informations STP🦧
 
 - A l'aide des commandes dédiées au protocole
 
@@ -106,7 +106,7 @@ Et1/2               Desg FWD 100       128.7    Shr
 ```
 Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
 
-🌞 Faire un schéma en représentant les informations STP
+🌞 Faire un schéma en représentant les informations STP🦧
 
 - rôle des switches (qui est le root bridge)
 - rôle de chacun des ports
