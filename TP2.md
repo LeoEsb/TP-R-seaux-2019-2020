@@ -71,3 +71,43 @@ Total Mac Addresses for this criterion: 6
 ```
 🐙 En lançant Wireshark sur les liens des switches, il y a des trames CDP qui circulent. Quoi qu'est-ce ?
 ![wireshark](IMG/wireshark1.PNG)
+
+
+🌞 Déterminer les informations STP
+
+- A l'aide des commandes dédiées au protocole
+
+- Qui est le root bridge, quels sont les ports désactivés, etc
+```
+IOU3#show spanning-tree
+
+VLAN0001
+  Spanning tree enabled protocol rstp
+  Root ID    Priority    32769
+             Address     aabb.cc00.0100
+             Cost        100
+             Port        2 (Ethernet0/1)
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+
+  Bridge ID  Priority    32769  (priority 32768 sys-id-ext 1)
+             Address     aabb.cc00.0300
+             Hello Time   2 sec  Max Age 20 sec  Forward Delay 15 sec
+             Aging Time  300 sec
+
+Interface           Role Sts Cost      Prio.Nbr Type
+------------------- ---- --- --------- -------- --------------------------------
+Et0/0               Desg FWD 100       128.1    Shr
+Et0/1               Root FWD 100       128.2    Shr
+Et0/2               Desg FWD 100       128.3    Shr
+Et0/3               Altn BLK 100       128.4    Shr
+Et1/0               Desg FWD 100       128.5    Shr
+Et1/1               Desg FWD 100       128.6    Shr
+Et1/2               Desg FWD 100       128.7    Shr
+```
+Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
+
+🌞 Faire un schéma en représentant les informations STP
+
+- rôle des switches (qui est le root bridge)
+- rôle de chacun des ports
+
