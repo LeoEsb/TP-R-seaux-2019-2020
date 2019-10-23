@@ -110,7 +110,7 @@ Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
 
 - rôle des switches (qui est le root bridge)
 - rôle de chacun des ports
-
+```
                                                        +-------------------+
                                                        |                   |
                                                        |                   |
@@ -142,3 +142,4 @@ Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
 |                    |                                                                         +--------------+            
 +--------------------+                                                                                                    
                                                                                                              
+```                                                                                                          
