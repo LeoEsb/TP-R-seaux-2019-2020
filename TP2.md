@@ -270,3 +270,144 @@ PC3> ping 10.2.3.2
 ^C
 ```
 ### 2. Avec trunk
+🌞 Mettre en place la topologie ci-dessus (en utilisant des VLAN, vous aurez besoin de la notion de trunk)
+Conf sw1 :
+```
+IOU1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+IOU1(config)#vlan 10
+IOU1(config-vlan)#name vlan10
+IOU1(config-vlan)#exit
+IOU1(config)#interface Ethernet 0/0
+IOU1(config-if)#switchport mode access
+IOU1(config-if)#switchport access vlan 10
+IOU1(config-if)#interface Ethernet 0/1
+IOU1(config-if)#switchport mode access
+IOU1(config-if)#switchport access vlan 20
+% Access VLAN does not exist. Creating vlan 20
+IOU1(config-if)#exit
+IOU1(config)#vlan 20
+IOU1(config-vlan)#name vlan20
+IOU1(config-vlan)#exit
+IOU1(config)#interface Ethernet 0/1
+IOU1(config-if)#switchport mode access
+IOU1(config-if)#switchport access vlan 20
+IOU1(config-if)#exit
+IOU1(config)#nterface Ethernet 1/1
+               ^
+% Invalid input detected at '^' marker.
+
+IOU1(config)#interface Ethernet 1/1
+IOU1(config-if)#switchport trunk encapsulation dot1q
+IOU1(config-if)#switchport mode trunk
+IOU1(config-if)#
+*Oct 23 20:19:55.496: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1/1, changed state to down
+IOU1(config-if)#
+*Oct 23 20:19:58.500: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1/1, changed state to up
+IOU1(config-if)#switchport trunk allowed vlan 10,20
+IOU1(config-if)#exit
+IOU1(config)#interface Ethernet 1/0
+IOU1(config-if)#switchport trunk encapsulation dot1q
+IOU1(config-if)#switchport mode trunk
+IOU1(config-if)#switchport trunk allowed vlan 10,20
+IOU1(config-if)#exit
+```
+Conf sw2:
+```
+IOU2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+IOU2(config)#interface Ethernet 1/2
+IOU2(config-if)#switchport mode access
+IOU2(config-if)#switchport access vlan 10
+% Access VLAN does not exist. Creating vlan 10
+IOU2(config-if)#exit
+IOU2(config)#vlan 10
+IOU2(config-vlan)#name vlan10
+IOU2(config-vlan)#exit
+IOU2(config)#interface Ethernet 1/2
+IOU2(config-if)#switchport mode access
+IOU2(config-if)#switchport access vlan 10
+IOU2(config-if)#exit
+IOU2(config)#vlan 20
+IOU2(config-vlan)#name vlan20
+IOU2(config-vlan)#exit
+IOU2(config)#interface Ethernet 1/3
+IOU2(config-if)#switchport mode access
+IOU2(config-if)#switchport access vlan 20
+IOU2(config-if)#exit
+IOU2(config)#exit
+IOU2#
+*Oct 23 20:25:56.047: %SYS-5-CONFIG_I: Configured from console by console
+IOU2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+IOU2(config)#interface Ethernet 1/0
+IOU2(config-if)#switchport mode access
+IOU2(config-if)#switchport trunk encapsulation dot1q
+IOU2(config-if)#switchport mode trunk
+IOU2(config-if)#
+*Oct 23 20:27:41.109: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1/0, changed state to down
+IOU2(config-if)#
+*Oct 23 20:27:44.113: %LINEPROTO-5-UPDOWN: Line protocol on Interface Ethernet1/0, changed state to up
+IOU2(config-if)#switchport trunk allowed vlan 10,20
+IOU2(config-if)#exit
+IOU2(config)#interface Ethernet 1/1
+IOU2(config-if)#switchport trunk encapsulation dot1q
+IOU2(config-if)#switchport mode trunk
+IOU2(config-if)#switchport trunk allowed vlan 10,20
+IOU2(config-if)#exit
+```
+Tout marche ! PC1 et PC3 peuvent se ping seulement entre eux, idem pour PC2 et PC4 ils peuvent uniquement se ping entre eux !
+Démo :
+```
+PC1> ping 10.2.10.2
+84 bytes from 10.2.10.2 icmp_seq=1 ttl=64 time=0.745 ms
+84 bytes from 10.2.10.2 icmp_seq=2 ttl=64 time=0.933 ms
+84 bytes from 10.2.10.2 icmp_seq=3 ttl=64 time=0.958 ms
+84 bytes from 10.2.10.2 icmp_seq=4 ttl=64 time=0.942 ms
+^C
+PC1> ping 10.2.20.1
+No gateway found
+
+PC1> ping 10.2.20.2
+No gateway found
+```
+```
+PC2> save
+Saving startup configuration to startup.vpc
+.  done
+
+PC2> ping 10.2.10.1
+No gateway found
+
+PC2> ping 10.2.10.2
+No gateway found
+
+PC2> ping 10.2.20.2
+84 bytes from 10.2.20.2 icmp_seq=1 ttl=64 time=0.851 ms
+84 bytes from 10.2.20.2 icmp_seq=2 ttl=64 time=1.391 ms
+84 bytes from 10.2.20.2 icmp_seq=3 ttl=64 time=0.954 ms
+```
+```
+PC3> ping 10.2.10.1
+84 bytes from 10.2.10.1 icmp_seq=1 ttl=64 time=0.782 ms
+84 bytes from 10.2.10.1 icmp_seq=2 ttl=64 time=0.859 ms
+84 bytes from 10.2.10.1 icmp_seq=3 ttl=64 time=1.131 ms
+^C
+PC3> ping 10.2.20.1
+No gateway found
+
+PC3> ping 10.2.20.2
+No gateway found
+```
+```
+PC4> ping 10.2.10.1
+No gateway found
+
+PC4> ping 10.2.20.1
+84 bytes from 10.2.20.1 icmp_seq=1 ttl=64 time=0.961 ms
+84 bytes from 10.2.20.1 icmp_seq=2 ttl=64 time=0.920 ms
+84 bytes from 10.2.20.1 icmp_seq=3 ttl=64 time=1.059 ms
+^C
+PC4> ping 10.2.10.2
+No gateway found
+```
