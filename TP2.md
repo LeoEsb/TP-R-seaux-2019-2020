@@ -147,3 +147,51 @@ Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
 
 - effectuer un ping d'une machine à une autre
 - vérifier que les trames passent bien par le chemin attendu (Wireshark)
+Ping du PC3 vers PC2 : 
+```
+15	14.489988	10.2.2.3	10.2.2.1	ICMP	98	Echo (ping) request  id=0xde9f, seq=1/256, ttl=64 (reply in 16)
+Frame 15: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface 0
+Ethernet II, Src: Private_66:68:00 (00:50:79:66:68:00), Dst: Private_66:68:02 (00:50:79:66:68:02)
+Internet Protocol Version 4, Src: 10.2.2.3, Dst: 10.2.2.1
+Internet Control Message Protocol
+```
+```
+16	14.490836	10.2.2.1	10.2.2.3	ICMP	98	Echo (ping) reply    id=0xde9f, seq=1/256, ttl=64 (request in 15)
+Frame 16: 98 bytes on wire (784 bits), 98 bytes captured (784 bits) on interface 0
+Ethernet II, Src: Private_66:68:02 (00:50:79:66:68:02), Dst: Private_66:68:00 (00:50:79:66:68:00)
+Internet Protocol Version 4, Src: 10.2.2.1, Dst: 10.2.2.3
+Internet Control Message Protocol
+```
+🌞 Ainsi, déterminer quel lien a été désactivé par STP   
+C'est le lien entre SW2 et SW3  
+
+🌞 Faire un schéma qui explique le trajet d'une requête ARP lorsque PC1 ping PC3, et de sa réponse
+      - représenter TOUTES les trames ARP (n'oubliez pas les broadcasts)
+```
+                                     +-------+
+                                     |       |
+                                     |  PC2  |
+                                     |       |
+                                     +---+---+
+                                         |
+                                         |
+                                         |
+                                         |
+                                     +---+---+
+                                     |       |
+                             +-------+  SW2  +---------+
+                         ^   |       |       |         |
+                         |   |       +-------+         |
+                         |   |                         |
+                         |   |                         |
+                             |                         |
++---------+             +----+---+                +----+---+          +---------+
+|         |             |        |                |        |          |         |
+|  PC1    +-------------+  SW1   +----------------+   SW3  +----------+   PC3   |
+|         |             |        |                |        |          |         |
++---------+             +--------+                +--------+          +---------+
+
+Envoie ping  ------>    Qui est l'ip   --------->  Qui est l'ip  --->  C'est mon ip
+pour PC3                10.2.2.3 en                10.2.2.3 en
+                        broadcast                  broadcast
+```
