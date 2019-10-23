@@ -143,3 +143,7 @@ Le rooot bridge est l'interface Et0/1 et le port désactivé est Et0/3.
 +--------------------+                                                                                                    
                                                                                                              
 ```                                                                                                          
+🌞 Confirmer les informations STP
+
+- effectuer un ping d'une machine à une autre
+- vérifier que les trames passent bien par le chemin attendu (Wireshark)
