@@ -195,3 +195,78 @@ Envoie ping  ------>    Qui est l'ip   --------->  Qui est l'ip  --->  C'est mon
 pour PC3                10.2.2.3 en                10.2.2.3 en
                         broadcast                  broadcast
 ```
+## III. Isolation
+### 1. Simple
+🌞 Mettre en place la topologie ci-dessus avec des VLANs
+ - voir les commandes dédiées à la manipulation de VLANs
+🌞 Faire communiquer les PCs deux à deux
+- Vérifier que PC2 ne peut joindre que PC3
+- Vérifier que PC1 ne peut joindre personne alors qu'il est dans le même réseau (sad)
+```
+IOU1#show vlan
+
+VLAN Name                             Status    Ports
+---- -------------------------------- --------- -------------------------------
+1    default                          active    Et0/0, Et0/1, Et0/2, Et0/3
+                                                Et1/0, Et1/1, Et1/2, Et1/3
+                                                Et2/0, Et2/1, Et2/2, Et2/3
+                                                Et3/0, Et3/1, Et3/2, Et3/3
+1002 fddi-default                     act/unsup
+1003 token-ring-default               act/unsup
+1004 fddinet-default                  act/unsup
+1005 trnet-default                    act/unsup
+
+VLAN Type  SAID       MTU   Parent RingNo BridgeNo Stp  BrdgMode Trans1 Trans2
+---- ----- ---------- ----- ------ ------ -------- ---- -------- ------ ------
+1    enet  100001     1500  -      -      -        -    -        0      0
+1002 fddi  101002     1500  -      -      -        -    -        0      0
+1003 tr    101003     1500  -      -      -        -    -        0      0
+1004 fdnet 101004     1500  -      -      -        ieee -        0      0
+1005 trnet 101005     1500  -      -      -        ibm  -        0      0
+
+Remote SPAN VLANs
+------------------------------------------------------------------------------
+
+
+Primary Secondary Type              Ports
+------- --------- ----------------- ------------------------------------------
+```
+Config :
+```
+IOU1(config)#vlan 10
+IOU1(config-vlan)#name client-network
+IOU1(config-vlan)#exit
+IOU1(config)#vlan 10
+IOU1(config-vlan)#name vlan10
+IOU1(config-vlan)#exit
+IOU1(config)#interface Ethernet 0/0
+IOU1(config-if)#switchport mode access
+IOU1(config-if)#switchport access vlan 10
+```
+J'ai fais la meme mais en changeant le vlan 20 et en changeant les ports Et0/2 et Et0/3 pour que PC2 et PC3 communiquent entre eux.
+Ping de PC1 vers les deux autres qui ne marchent pas #SAD
+```
+PC1 : 10.2.3.1 255.255.255.0
+
+PC1> ping 10.2.3.2
+^C^[[Ahost (10.2.3.2) not reachable
+
+PC1> ping 10.2.3.3
+^Chost (10.2.3.3) not reachable
+```
+Ping entre PC2 et PC3 :
+```
+PC2> ping 10.2.3.3
+84 bytes from 10.2.3.3 icmp_seq=1 ttl=64 time=0.685 ms
+84 bytes from 10.2.3.3 icmp_seq=2 ttl=64 time=0.671 ms
+84 bytes from 10.2.3.3 icmp_seq=3 ttl=64 time=0.679 ms
+^C
+```
+```
+PC3> ping 10.2.3.2
+84 bytes from 10.2.3.2 icmp_seq=1 ttl=64 time=0.459 ms
+84 bytes from 10.2.3.2 icmp_seq=2 ttl=64 time=0.662 ms
+84 bytes from 10.2.3.2 icmp_seq=3 ttl=64 time=0.732 ms
+^C
+```
+### 2. Avec trunk
