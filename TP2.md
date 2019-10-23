@@ -356,7 +356,13 @@ IOU2(config-if)#switchport mode trunk
 IOU2(config-if)#switchport trunk allowed vlan 10,20
 IOU2(config-if)#exit
 ```
-Tout marche ! PC1 et PC3 peuvent se ping seulement entre eux, idem pour PC2 et PC4 ils peuvent uniquement se ping entre eux !
+🌞 Faire communiquer les PCs deux à deux
+
+- vérifier que PC1 ne peut joindre que PC3
+
+- vérifier que PC4 ne peut joindre que PC2
+PC1 et PC3 peuvent se ping seulement entre eux, idem pour PC2 et PC4 ils peuvent uniquement se ping entre eux !    
+
 Démo :
 ```
 PC1> ping 10.2.10.2
